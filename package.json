@@ -1,7 +1,19 @@
 {
-  "name": "root",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "eslint packages/*/lib",
+    "lint-fix": "eslint packages/*/lib --fix --cache"
+  },
   "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-rc": "^1.0.2",
+    "git-pre-hooks": "^1.2.1",
     "lerna": "^4.0.0"
+  },
+  "git-pre-hooks": {
+    "pre-commit": "npm run lint"
   }
 }
