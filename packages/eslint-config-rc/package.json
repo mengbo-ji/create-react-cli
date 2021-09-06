@@ -27,5 +27,6 @@
   },
   "bugs": {
     "url": "https://github.com/mengbo-ji/create-react-cli/issues"
-  }
+  },
+  "homepage": "https://github.com/mengbo-ji/create-react-cli/eslint-config-rc#readme"
 }
