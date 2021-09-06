@@ -4,8 +4,8 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint packages/*/lib",
-    "lint-fix": "eslint packages/*/lib --fix --cache"
+    "lint": "eslint packages/*/",
+    "lint-fix": "eslint packages/*/ --fix --cache"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
