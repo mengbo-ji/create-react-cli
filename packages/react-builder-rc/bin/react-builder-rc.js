@@ -9,7 +9,7 @@ if (!builderConfig) {
   console.error(chalk.red('Error: 你必须在package.json中 添加builder-config配置, 具体配置请查看README'));
   process.exit(1);
 }
-
+console.log('link成功');
 const args = process.argv.slice(2);
 
 const scriptIndex = args.findIndex(
@@ -27,10 +27,6 @@ if ([ 'dev', 'build' ].includes(script)) {
 
 if (args.includes('--profile')) {
   process.env.PROFILE = true;
-}
-
-if (args.includes('--stats')) {
-  process.env.STATS = true;
 }
 
 require(scriptPath);

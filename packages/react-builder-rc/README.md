@@ -30,10 +30,7 @@ npm install --save-dev react-builder-rc
 这个配置告知构建器，你要使用什么方式去构建项目
 
 ```json
-"builder-config": {
-  "typescript": false,
-  "entry": "SPA",
-},
+"builder-config": {},
 ```
 
 | Parameter      | Description                  | Type    | Optional Value | Default |
@@ -41,20 +38,18 @@ npm install --save-dev react-builder-rc
 | devPublicPath  | 开发环境publicPath           | string  | --             | '/'     |
 | prodPublicPath | 生产环境publicPath           | string  | --             | '/'     |
 | typescript     | 是否开启ts构建               | boolean | --             | false   |
-| entry          | 项目入口 是单入口 还是多入口 | String  | 'SPA','MPA'    | 'SPA'   |
 
 ### npm scripts 
 
 ```jso
-"dev": "react-builder-rc dev --stats",
-"build": "react-builder-rc build --stats",
+"dev": "react-builder-rc dev",
+"build": "react-builder-rc build",
 ```
 
 | Description                             | Type   | Optional Value | Default     |
 | --------------------------------------- | ------ | -------------- | ----------- |
 | 开发 指令                               | string | dev            | dev         |
 | 构建 指令                               | string | build          | build       |
-| 是否开启 终端stats展示，同webpack.stats | string | --stats        | errors-only |
 | 是否开启 profile 分析                   | string | --profile      | none        |
 
 ## Template 配置

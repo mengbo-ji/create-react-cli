@@ -1,55 +1,36 @@
 const webpack = require('webpack');
-const portfinder = require('portfinder');
-const chalk = require('chalk');
 const webpackConfig = require('./webpack.config');
 const server = require('./server');
 const paths = require('./paths');
 const overrides = require(paths.appOverrides);
-const { LOG_COLOR } = require('./constant');
 
-function getPort(webpackConfig) {
-  return new Promise((resolve, reject) => {
-    portfinder.getPort((err, port) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      console.log(chalk.cyan('INFO:'), `Port ${chalk.hex(LOG_COLOR)(webpackConfig.devServer.port)} is in use, trying another one...`);
-      webpackConfig.devServer.port = port;
-      resolve(webpackConfig);
-    });
-  });
-}
-
-function getStats(webpackConfig) {
-  return new Promise(resolve => {
-    if (process.env.STATS) {
-      webpackConfig.devServer.stats = {
-        chunks: false,
-        chunkModules: false,
-        colors: true,
-        children: false,
-        builtAt: true,
-        modules: false,
-        excludeAssets: [
-          /assets/,
-        ],
-      };
-    } else {
-      webpackConfig.devServer.stats = 'errors-only';
-    }
-    resolve(webpackConfig);
-  });
-}
-
-// devServer 配置拦截
-async function devServerInterceptor(webpackConfig) {
-  return await getPort(webpackConfig).then(webpackConfig => getStats(webpackConfig));
+function getDevServerConfig(webpackConfig) {
+  const devServerConfig = {
+    contentBase: paths.appDist,
+    overlay: false, // 不在浏览器页面上显示错误
+    open: true,
+    hot: true,
+    publicPath: '/',
+    stats: {
+      chunks: false,
+      chunkModules: false,
+      colors: true,
+      children: false,
+      builtAt: true,
+      modules: false,
+      excludeAssets: [
+        /assets/,
+      ],
+      errors: true,
+    },
+    disableHostCheck: true,
+  };
+  webpackConfig.devServer = Object.assign(devServerConfig, webpackConfig.devServer);
+  return webpackConfig;
 }
 
 async function compile(type) {
-  const newWebpackConfig = await devServerInterceptor(overrides(webpackConfig));
+  const newWebpackConfig = getDevServerConfig(overrides(webpackConfig));
   const compiler = webpack(newWebpackConfig);
 
   return new Promise((resolve, reject) => {
@@ -64,19 +45,17 @@ async function compile(type) {
           return;
         }
 
-        if (process.env.STATS) {
-          console.log(stats.toString({
-            chunks: false,
-            chunkModules: false,
-            colors: true,
-            children: false,
-            builtAt: true,
-            modules: false,
-            excludeAssets: [
-              /assets/,
-            ],
-          }));
-        }
+        console.log(stats.toString({
+          chunks: false,
+          chunkModules: false,
+          colors: true,
+          children: false,
+          builtAt: true,
+          modules: false,
+          excludeAssets: [
+            /assets/,
+          ],
+        }));
 
         if (stats.hasErrors()) {
           reject(new Error(stats.toJson().errors));

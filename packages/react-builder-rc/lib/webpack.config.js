@@ -177,9 +177,6 @@ const config = {
 };
 
 console.log(chalk.cyan('INFO:'), `当前构建模式为 ${chalk.hex(LOG_COLOR)(env.raw.NODE_ENV)} 模式`);
-if (process.env.STATS) {
-  console.log(chalk.cyan('INFO:'), `当前构建已开启 ${chalk.hex(LOG_COLOR)('stats')} 展示`);
-}
 
 if (env.raw.NODE_ENV === 'development') {
   // 热更新

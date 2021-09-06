@@ -14,8 +14,10 @@ require('../lib/env');
 const chalk = require('chalk');
 const { compile } = require('../lib/compile');
 
-compile('build').catch(err => {
-  console.error(chalk.red(err.stack || err));
-  process.exit(1);
-});
+compile('build')
+  .then(() => process.exit(0))
+  .catch(err => {
+    console.error(chalk.red(err.stack || err));
+    process.exit(1);
+  });
 
