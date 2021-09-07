@@ -1,5 +1,5 @@
 {
-  "name": "dva-template-vite",
+  "name": "vite-react-typescript-starter",
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
