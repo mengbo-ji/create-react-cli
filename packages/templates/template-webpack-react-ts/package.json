@@ -1,0 +1,57 @@
+{
+  "name": "webpack-react-typescript-starter",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "react-builder-rc dev",
+    "build": "npm run clean && react-builder-rc build",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint-fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix --cache",
+    "server": "node builder/server.js"
+  },
+  "builder-config": {
+    "typescript": true
+  },
+  "dependencies": {
+    "@ant-design/charts": "^1.1.4",
+    "@ant-design/icons": "^4.6.2",
+    "@ant-design/pro-layout": "^6.17.1",
+    "antd": "^4.15.2",
+    "dva": "^2.6.0-beta.22",
+    "dva-loading": "^3.0.22",
+    "history": "^4.10.1",
+    "immer": "^9.0.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "query-string": "^7.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "reflect-metadata": "^0.1.13",
+    "styled-components": "^5.2.3",
+    "umi-request": "^1.3.5"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^14.14.41",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "chalk": "^4.1.1",
+    "eslint": "^7.27.0",
+    "eslint-config-rc": "^1.0.0",
+    "git-pre-hooks": "^1.2.1",
+    "koa": "^2.13.1",
+    "koa-proxy": "^1.0.0-alpha.3",
+    "koa-static": "^5.0.0",
+    "koa2-connect-history-api-fallback": "^0.1.3",
+    "openurl": "^1.1.1",
+    "portfinder": "^1.0.28",
+    "react-builder-rc": "^1.1.2",
+    "stylelint": "^9.3.0",
+    "stylelint-config-css-modules": "^1.5.0",
+    "stylelint-config-recommended": "^2.2.0",
+    "typescript": "^3.7.0"
+  },
+  "git-pre-hooks": {
+    "pre-commit": "npm run lint"
+  }
+}

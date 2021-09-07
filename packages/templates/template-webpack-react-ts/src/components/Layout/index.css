@@ -1,0 +1,16 @@
+.layout {
+  height: 100%;
+  width: 100%;
+  .antd-layout {
+    height: 100%;
+    :global(.ant-pro-sider-logo) {
+      a {
+        width: 100%;
+        justify-content: left;
+        svg {
+          width: 20%
+        }
+      }
+    }
+  }
+}
