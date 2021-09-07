@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "baseUrl": "./src", // 工作根目录
+    "target": "esnext", // 编译的目标设置为最新版本
+    "module": "esnext", // 指定生成最新的模块系统
+    "moduleResolution": "Node", // 模块解析策略
+    "allowJs": true, // 允许编译：IS 文件（js、jsx)
+    "noEmit": true, // 不输出文件
+    "strict": true, // 开启所有严格的类型检查
+    "esModuleInterop": true, // 允许export = 导出，由import from导入 
+    "experimentalDecorators": true, // 启用实验性的ES装饰器
+    "jsx": "preserve", // 在 .tsx文件里支持JSX
+    "skipLibCheck": true, // 忽略所有的声明文件（*.d.ts）的类型检查。
+    "types": ["vite/client"],
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+  },
+  "include": ["./src"]
+}
