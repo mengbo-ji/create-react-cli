@@ -15,7 +15,7 @@ const chalk = require('chalk');
 const { compile } = require('../lib/compile');
 
 compile('build')
-  .then(() => process.exit(0))
+  .then(() => !process.env.PROFILE && process.exit(0))
   .catch(err => {
     console.error(chalk.red(err.stack || err));
     process.exit(1);
