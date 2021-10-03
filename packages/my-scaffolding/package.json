@@ -1,0 +1,17 @@
+{
+  "name": "my-scaffolding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "bin": "my-scaffolding",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "inquirer": "^8.1.5"
+  }
+}
