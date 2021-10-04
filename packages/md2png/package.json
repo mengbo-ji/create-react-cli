@@ -1,0 +1,13 @@
+{
+  "name": "md2png",
+  "version": "1.0.0",
+  "description": "md文档转换成png图片",
+  "main": "lib/index.js",
+  "bin": "md2png",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
