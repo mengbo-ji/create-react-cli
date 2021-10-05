@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "md文档转换成png图片",
   "main": "lib/index.js",
-  "bin": "md2png",
+  "bin": {
+    "md2png": "bin/md2png.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^8.2.0",
+    "cosmiconfig": "^7.0.1",
+    "marked": "^3.0.4",
+    "ora": "^6.0.1",
+    "puppeteer": "^10.4.0"
+  }
 }
