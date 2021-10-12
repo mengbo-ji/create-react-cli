@@ -8,6 +8,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const MinniCssExtractPlugin = require('mini-css-extract-plugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const paths = require('./paths');
 const babelConfig = require('./babelConfig');
@@ -180,7 +181,7 @@ console.log(chalk.cyan('INFO:'), `当前构建模式为 ${chalk.hex(LOG_COLOR)(e
 
 if (env.raw.NODE_ENV === 'development') {
   // 热更新
-  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+  config.plugins.push(new ReactRefreshWebpackPlugin());
 }
 
 if (env.raw.NODE_ENV === 'production') {
@@ -225,6 +226,8 @@ if (env.raw.NODE_ENV === 'production') {
   );
   // 开启性能提示
   config.performance = {};
+  // sourceMap 开启nosources
+  config.devtool = 'nosources-source-map';
 }
 
 // 支持ts

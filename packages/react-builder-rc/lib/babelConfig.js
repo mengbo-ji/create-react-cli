@@ -36,5 +36,8 @@ module.exports = {
     require.resolve('@babel/plugin-syntax-import-meta'),
     [ require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
     require.resolve('@babel/plugin-proposal-json-strings'),
+
+    // react HMR babel插件
+    [ process.env.NODE_ENV === 'development' && require.resolve('react-refresh/babel') ].filter(Boolean),
   ],
 };
