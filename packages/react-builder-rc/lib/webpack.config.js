@@ -19,7 +19,7 @@ const { LOG_COLOR } = require('./constant');
 const builderConfig = getBuilderConfig();
 const env = clientEnvironment();
 const publicPath = getPublicPath();
-// 生产环境启用路径映射，其他情况下不需要
+// 生产环境将css提取到单独的文件，其他情况下不需要，不能和style-loader一起使用
 const doExtract = env.raw.NODE_ENV === 'production';
 
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -175,6 +175,10 @@ const config = {
   performance: {
     hints: false,
   },
+  optimization: {
+    usedExports: true, // 模块只导出被使用的成员
+    concatenateModules: true, // 尽可能合并每一个模块到一个函数中
+  },
 };
 
 console.log(chalk.cyan('INFO:'), `当前构建模式为 ${chalk.hex(LOG_COLOR)(env.raw.NODE_ENV)} 模式`);
@@ -192,7 +196,7 @@ if (env.raw.NODE_ENV === 'production') {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        parallel: true,
+        parallel: true, // 多线程压缩
         sourceMap: true, // 如果在生产环境中使用 source-maps，必须设置为 true
         terserOptions: {
           // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
@@ -216,7 +220,7 @@ if (env.raw.NODE_ENV === 'production') {
       assetNameRegExp: /\.css$/g,
       cssProcessorOptions: {
         discardComments: {
-          removeAll: true,
+          removeAll: true, // 移出css中的注释
         },
         autoprefixer: false,
         zindex: false,
