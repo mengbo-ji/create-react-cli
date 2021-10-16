@@ -175,10 +175,6 @@ const config = {
   performance: {
     hints: false,
   },
-  optimization: {
-    usedExports: true, // 模块只导出被使用的成员
-    concatenateModules: true, // 尽可能合并每一个模块到一个函数中
-  },
 };
 
 console.log(chalk.cyan('INFO:'), `当前构建模式为 ${chalk.hex(LOG_COLOR)(env.raw.NODE_ENV)} 模式`);
