@@ -181,7 +181,9 @@ console.log(chalk.cyan('INFO:'), `当前构建模式为 ${chalk.hex(LOG_COLOR)(e
 
 if (env.raw.NODE_ENV === 'development') {
   // 热更新
-  config.plugins.push(new ReactRefreshWebpackPlugin());
+  config.plugins.push(new ReactRefreshWebpackPlugin({
+    overlay: false,
+  }));
 }
 
 if (env.raw.NODE_ENV === 'production') {
