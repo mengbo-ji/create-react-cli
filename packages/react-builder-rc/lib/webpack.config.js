@@ -210,9 +210,6 @@ if (env.raw.NODE_ENV === 'production') {
         },
       }),
     ],
-    splitChunks: {
-      chunks: 'all',
-    },
   };
 
   // 压缩css

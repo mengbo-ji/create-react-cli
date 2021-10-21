@@ -1,6 +1,6 @@
 {
   "name": "react-builder-rc",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "基于webpack4 + babel7 的一个react构建器",
   "bin": {
     "react-builder-rc": "bin/react-builder-rc.js"
