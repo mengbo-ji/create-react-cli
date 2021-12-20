@@ -230,7 +230,7 @@ const config = {
   },
 };
 
-console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建模式为 ${chalk.hex(LOG_VALUE_COLOR)(env.raw.NODE_ENV)} 模式`);
+console.log(chalk.hex(LOG_LABEL_COLOR).bold('INFO:'), `当前构建模式为 ${chalk.hex(LOG_VALUE_COLOR).bold(env.raw.NODE_ENV)} 模式`);
 
 if (doExtract) {
   config.plugins.push(
@@ -282,7 +282,7 @@ if (env.raw.NODE_ENV === 'production') {
 
 // 支持ts
 if (builderConfig.typescript) {
-  console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建已开启 ${chalk.hex(LOG_VALUE_COLOR)('TypeScript')} 支持`);
+  console.log(chalk.hex(LOG_LABEL_COLOR).bold('INFO:'), `当前构建已开启 ${chalk.hex(LOG_VALUE_COLOR).bold('TypeScript')} 支持`);
   // eslint 检查
   config.plugins.push(
     new ForkTsCheckerWebpackPlugin({
@@ -293,7 +293,7 @@ if (builderConfig.typescript) {
 
 // 开启 profile 分析
 if (process.env.PROFILE) {
-  console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建已开启 ${chalk.hex(LOG_VALUE_COLOR)('profile')} 分析`);
+  console.log(chalk.hex(LOG_LABEL_COLOR).bold('INFO:'), `当前构建已开启 ${chalk.hex(LOG_VALUE_COLOR).bold('profile')} 分析`);
   config.plugins.push(new BundleAnalyzerPlugin());
 }
 
@@ -303,6 +303,6 @@ const entryInfo = !(env.raw.MICRO && process.MICRO_CONFIG.mode === 'UNITY') ? JS
     .join('\n  ')
     .replace('{', '\n  ')
     .replace('}', '');
-console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建入口为 ${chalk.hex(LOG_VALUE_COLOR)(entryInfo)}`);
+console.log(chalk.hex(LOG_LABEL_COLOR).bold('INFO:'), `当前构建入口为 ${chalk.hex(LOG_VALUE_COLOR).bold(entryInfo)}`);
 
 module.exports = config;

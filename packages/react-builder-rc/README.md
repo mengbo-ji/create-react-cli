@@ -1,10 +1,10 @@
 # 介绍
 
-### 基于webpack4、babel7开发的一款 react项目构建器
+### 基于webpack5、babel7开发的一款 react项目构建器
 
 ### 特性
 
-- 基于webpack4、babel7开发
+- 基于webpack5、babel7开发
 - 集成了 TypeScript构建、webpack-dev-server支持、热更新、最新的babel配置(支持到es2020)
 - 让你不再关注 bable 和 webpack等乱七八糟头疼的配置
 
