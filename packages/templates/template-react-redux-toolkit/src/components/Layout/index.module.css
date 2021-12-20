@@ -1,0 +1,69 @@
+.layout {
+  .antd-layout {
+    min-height: 100vh;
+    :global(.ant-pro-global-header) {
+      background: rgb(57, 94, 181);
+      .username {
+        cursor: pointer;
+        padding: 0 12px;
+        height: 100%;
+        display: inline-block;
+        color: #fff;
+        img {
+          margin-right: 8px;
+          height: 24px;
+          width: 24px;
+        }
+      }
+    }
+    :global(.ant-layout-sider) {
+      :global(.ant-pro-sider-logo) {
+        height: 48px;
+        line-height: 48px;
+        background: rgb(57, 94, 181);
+        a {
+          text-decoration: none !important;
+          h1 {
+            color: #fff;
+          }
+        }
+      }
+      :global(.ant-menu) {
+        font-size: 14px;
+        a {
+          text-decoration: none !important;
+        }
+      }
+    }
+    :global(.ant-layout-content) {
+      margin: 0px;
+      .page-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: 0px;
+        :global(.ant-page-header-back) {
+          margin-right: 8px;
+          :global(.anticon-arrow-left) {
+            font-size: 22px;
+          }
+        }
+        :global(.ant-pro-grid-content) {
+          flex: 1;
+        }
+        :global(.ant-pro-grid-content-children) {
+          height: 100%;
+          :global(.ant-pro-page-container-children-content) {
+            margin: 0px !important;
+            padding: 16px;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+:global(.ant-select-selection-overflow-item) {
+  margin-right: 4px;
+}

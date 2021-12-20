@@ -1,0 +1,13 @@
+.loading {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.loading-body {
+  position: absolute !important;
+  top: 249px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}

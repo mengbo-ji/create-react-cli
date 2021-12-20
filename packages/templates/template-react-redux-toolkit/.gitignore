@@ -1,0 +1,8 @@
+node_modules/
+build/
+dist/
+dist.zip
+.vscode
+.eslintcache
+.DS_Store
+package-lock.json
