@@ -1,12 +1,12 @@
-import '@ant-design/pro-layout/dist/layout.css';
-import 'antd/dist/antd.css';
 import 'assets/css/base.css';
-import 'moment/locale/zh-cn';
+import 'moment/dist/locale/zh-cn';
 import { createBrowserHistory } from 'history';
 import createLoading from 'dva-loading';
 import dva from 'dva';
 import models from './models';
 import router from './router';
+import moment from 'moment';
+moment.locale('zh-cn');
 
 const app = dva({
   history: createBrowserHistory(),

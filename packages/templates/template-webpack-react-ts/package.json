@@ -15,8 +15,8 @@
   "dependencies": {
     "@ant-design/charts": "^1.1.4",
     "@ant-design/icons": "^4.6.2",
-    "@ant-design/pro-layout": "^6.17.1",
-    "antd": "^4.15.2",
+    "@ant-design/pro-layout": "^6.22.1",
+    "antd": "4.17.0",
     "dva": "^2.6.0-beta.22",
     "dva-loading": "^3.0.22",
     "history": "^4.10.1",

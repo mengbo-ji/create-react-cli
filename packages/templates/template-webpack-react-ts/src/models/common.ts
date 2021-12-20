@@ -20,8 +20,7 @@ class Common extends BaseModel {
 
   @effect()
   *getLicenseKey() {
-    const res = yield effect.call(createService('api/xxx', 'get'));
-    console.log('res', res);
+    const res: {} = yield effect.call(createService('api/xxx', 'get'));
   }
 
   @reducer
