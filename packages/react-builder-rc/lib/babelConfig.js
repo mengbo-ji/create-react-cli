@@ -37,6 +37,8 @@ module.exports = {
     [ require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
     require.resolve('@babel/plugin-proposal-json-strings'),
 
+    // antd 动态导入
+    [ require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }, 'antd' ],
     // react HMR babel插件
     process.env.NODE_ENV === 'development' && require.resolve('react-refresh/babel'),
   ].filter(Boolean),

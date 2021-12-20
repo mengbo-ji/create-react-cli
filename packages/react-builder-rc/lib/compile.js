@@ -5,25 +5,25 @@ const paths = require('./paths');
 const overrides = require(paths.appOverrides);
 
 function getDevServerConfig(webpackConfig) {
+  /** @type {import('webpack-dev-server').Configuration} */
   const devServerConfig = {
-    contentBase: paths.appDist,
-    overlay: false, // 不在浏览器页面上显示错误
+    static: {
+      directory: paths.appDist,
+      publicPath: '/',
+    },
+    client: {
+      overlay: false,
+    },
     open: true,
     hot: true,
-    publicPath: '/',
-    stats: {
-      chunks: false,
-      chunkModules: false,
-      colors: true,
-      children: false,
-      builtAt: true,
-      modules: false,
-      excludeAssets: [
-        /assets/,
-      ],
-      errors: true,
+    port: 3000,
+    host: '127.0.0.1',
+    historyApiFallback: {
+      rewrites: [{
+        from: /^\/$/,
+        to: './index.html',
+      }],
     },
-    disableHostCheck: true,
   };
   webpackConfig.devServer = Object.assign(devServerConfig, webpackConfig.devServer);
   return webpackConfig;

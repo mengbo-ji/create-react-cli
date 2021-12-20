@@ -6,15 +6,15 @@ const CssUrlRelativePlugin = require('css-url-relative-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MinniCssExtractPlugin = require('mini-css-extract-plugin');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const paths = require('./paths');
 const babelConfig = require('./babelConfig');
 const clientEnvironment = require('./env');
 const { getAlais, getPublicPath, getBuilderConfig } = require('./hlper');
-const { LOG_COLOR } = require('./constant');
+const { LOG_VALUE_COLOR, LOG_LABEL_COLOR } = require('./constant');
 
 const builderConfig = getBuilderConfig();
 const env = clientEnvironment();
@@ -34,32 +34,40 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
     {
       loader: require.resolve('postcss-loader'),
       options: {
-        ident: 'postcss',
-        plugins: () => [
-          require('postcss-flexbugs-fixes'),
-          require('postcss-nested'),
-          require('postcss-preset-env')({
-            browsers: [
-              '>1%',
-              'last 4 versions',
-              'Firefox ESR',
-              'not ie < 9', // React doesn't support IE8 anyway
+        postcssOptions: {
+          plugins: [
+            require('postcss-flexbugs-fixes'),
+            require('postcss-nested'),
+            [
+              require('postcss-preset-env'),
+              {
+                browsers: [
+                  '>1%',
+                  'last 4 versions',
+                  'Firefox ESR',
+                  'not ie < 9', // React doesn't support IE8 anyway
+                ],
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                },
+                stage: 3,
+              },
             ],
-            autoprefixer: {
-              flexbox: 'no-2009',
-            },
-            stage: 3,
-          }),
-        ],
+          ],
+        },
       },
     },
     preProcessor,
   ].filter(Boolean);
 };
 
+/** @type {import('webpack').Configuration} */
 const config = {
   entry: paths.appIndex,
   mode: env.raw.NODE_ENV,
+  cache: {
+    type: 'filesystem',
+  },
   output: {
     path: paths.appDist,
     filename: 'js/[name].js',
@@ -79,8 +87,11 @@ const config = {
       oneOf: [
         // 加载图片
         {
-          test: /\.(svg|bmp|gif|png|jpe?g)$/,
-          loader: require.resolve('url-loader'),
+          test: /\.(png|jpe?g|gif|bmp|svg|eot|ttf|woff|woff2)$/,
+          type: 'asset',
+          generator: {
+            filename: '[name].[contenthash:8].[ext]',
+          },
         },
         // 加载js
         {
@@ -99,46 +110,93 @@ const config = {
         {
           test: /\.css$/,
           exclude: /\/node_modules\//,
-          // resourceQuery: /css_modules/,
-          use: getStyleLoaders({
-            importLoaders: 1,
-            modules: {
-              getLocalIdent: getCSSModuleLocalIdent,
-            },
-            localsConvention: 'camelCase',
-          }),
+          use: getStyleLoaders(
+            {
+              importLoaders: 1,
+              modules: {
+                mode: 'local',
+                exportLocalsConvention: 'camelCase',
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+            }
+          ),
         },
         // ./node_modules/*.css -> 全局css
-        // 没有被上面 css 匹配上的 src/*.css -> 全局css
         {
           test: /\.css$/,
           include: [ paths.appNodeModules ],
           use: getStyleLoaders({
             importLoaders: 1,
           }),
+          // Don't consider CSS imports dead code even if the
+          // containing package claims to have no side effects.
+          // Remove this when webpack adds a warning or an error for this.
+          // See https://github.com/webpack/webpack/issues/6571
+          sideEffects: true,
         },
         {
           test: /\.less$/,
-          use: getStyleLoaders({
-            importLoaders: 1,
-            modules: true,
-          },
-          {
-            loader: require.resolve('less-loader'),
-            options: {
-              javascriptEnabled: true,
+          exclude: /\/node_modules\//,
+          use: getStyleLoaders(
+            {
+              importLoaders: 1,
+              modules: {
+                mode: 'local',
+                exportLocalsConvention: 'camelCase',
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
             },
-          }),
+            {
+              loader: require.resolve('less-loader'),
+            }
+          ),
+        },
+        // ./node_modules/*.less -> 全局less
+        {
+          test: /\.less$/,
+          include: [ paths.appNodeModules ],
+          use: getStyleLoaders(
+            {
+              importLoaders: 1,
+            },
+            {
+              loader: require.resolve('less-loader'),
+              options: {
+                lessOptions: {
+                  modifyVars: {
+                    'primary-color': '#244ba8',
+                    'link-color': '#244ba8',
+                    'font-size-base': '12px',
+                    'text-color': 'rgba(0,0,0,.65)',
+                  },
+                  javascriptEnabled: true,
+                },
+              },
+            }
+          ),
+          sideEffects: true,
         },
         {
           exclude: [ /\.(js|jsx|mjs|ts|tsx)$/, /\.html$/, /\.json$/ ],
-          loader: require.resolve('file-loader'),
-          options: {
-            name: '[name].[hash:8].[ext]',
+          type: 'asset/resource',
+          generator: {
+            filename: '[name].[contenthash:8].[ext]',
           },
         },
       ],
     }],
+  },
+  stats: {
+    chunks: false,
+    chunkModules: false,
+    colors: true,
+    children: true,
+    builtAt: true,
+    modules: false,
+    excludeAssets: [
+      /assets/,
+    ],
+    errors: true,
   },
   plugins: [
     new webpack.DefinePlugin(env.stringified),
@@ -149,24 +207,19 @@ const config = {
     // 处理路径大小写问题
     new CaseSensitivePathsPlugin(),
     // 处理 .locale文件
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    // 分离css插件参数为提取出去的路径
-    new MinniCssExtractPlugin({
-      filename: 'css/[name].css',
-      ignoreOrder: true,
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
     }),
     // 静态资源输出
-    new CopyWebpackPlugin([
-      {
-        from: paths.appAssets,
-        to: paths.appDistAssets,
-        ignore: [ '.*' ],
-      }]
-    ),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: paths.appAssets, to: paths.appDistAssets },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: paths.appExample + '/index.html',
       filename: 'index.html',
-      hash: true, // 开启hash 防止缓存
     }),
   ].filter(Boolean),
   // 定义sourcemap 配置
@@ -177,7 +230,16 @@ const config = {
   },
 };
 
-console.log(chalk.cyan('INFO:'), `当前构建模式为 ${chalk.hex(LOG_COLOR)(env.raw.NODE_ENV)} 模式`);
+console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建模式为 ${chalk.hex(LOG_VALUE_COLOR)(env.raw.NODE_ENV)} 模式`);
+
+if (doExtract) {
+  config.plugins.push(
+    new MinniCssExtractPlugin({
+      filename: 'css/[name].css',
+      ignoreOrder: true,
+    })
+  );
+}
 
 if (env.raw.NODE_ENV === 'development') {
   // 热更新
@@ -187,45 +249,31 @@ if (env.raw.NODE_ENV === 'development') {
 }
 
 if (env.raw.NODE_ENV === 'production') {
-  const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
   const TerserPlugin = require('terser-webpack-plugin');
-
+  const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
   config.optimization = {
     minimize: true,
     minimizer: [
-      new TerserPlugin({
-        parallel: true, // 多线程压缩
-        sourceMap: true, // 如果在生产环境中使用 source-maps，必须设置为 true
-        terserOptions: {
+      new TerserPlugin(
+        {
+          parallel: true,
+          terserOptions: {
           // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-          compress: {
-            comparisons: false,
-          },
-          output: {
-            ascii_only: true,
-          },
-          mangle: {
+            compress: {
+              comparisons: false,
+            },
             safari10: true,
+            format: {
+              comments: false,
+            },
           },
-        },
-      }),
+          extractComments: false,
+        }
+      ),
+      new CssMinimizerPlugin(),
     ],
   };
 
-  // 压缩css
-  config.plugins.push(
-    new OptimizeCssAssetsPlugin({
-      assetNameRegExp: /\.css$/g,
-      cssProcessorOptions: {
-        discardComments: {
-          removeAll: true, // 移出css中的注释
-        },
-        autoprefixer: false,
-        zindex: false,
-      },
-      canPrint: true,
-    })
-  );
   // 开启性能提示
   config.performance = {};
   // sourceMap 开启nosources
@@ -234,23 +282,27 @@ if (env.raw.NODE_ENV === 'production') {
 
 // 支持ts
 if (builderConfig.typescript) {
-  console.log(chalk.cyan('INFO:'), `当前构建已开启 ${chalk.hex(LOG_COLOR)('TypeScript')} 支持`);
+  console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建已开启 ${chalk.hex(LOG_VALUE_COLOR)('TypeScript')} 支持`);
   // eslint 检查
   config.plugins.push(
     new ForkTsCheckerWebpackPlugin({
-      tsconfig: paths.appTsConfig,
-      async: false,
-      silent: true,
-      eslint: true,
+      async: true,
     })
   );
 }
 
 // 开启 profile 分析
 if (process.env.PROFILE) {
-  console.log(chalk.cyan('INFO:'), `当前构建已开启 ${chalk.hex(LOG_COLOR)('profile')} 分析`);
+  console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建已开启 ${chalk.hex(LOG_VALUE_COLOR)('profile')} 分析`);
   config.plugins.push(new BundleAnalyzerPlugin());
 }
 
-console.log(chalk.cyan('INFO:'), `当前构建入口为 ${chalk.hex(LOG_COLOR)(JSON.stringify(config.entry))}`);
+const entryInfo = !(env.raw.MICRO && process.MICRO_CONFIG.mode === 'UNITY') ? JSON.stringify(config.entry) :
+  JSON.stringify(config.entry)
+    .split(',')
+    .join('\n  ')
+    .replace('{', '\n  ')
+    .replace('}', '');
+console.log(chalk.hex(LOG_LABEL_COLOR)('INFO:'), `当前构建入口为 ${chalk.hex(LOG_VALUE_COLOR)(entryInfo)}`);
+
 module.exports = config;
