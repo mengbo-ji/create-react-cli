@@ -1,5 +1,5 @@
 const LOG_LABEL_COLOR = '5FFDFF';
-const LOG_VALUE_COLOR = 'A4E16F';
+const LOG_VALUE_COLOR = '5FFA68';
 
 module.exports = {
   LOG_LABEL_COLOR,
