@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const chalk = require('chalk');
+const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const CssUrlRelativePlugin = require('css-url-relative-plugin');
@@ -13,7 +14,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const paths = require('./paths');
 const babelConfig = require('./babelConfig');
 const clientEnvironment = require('./env');
-const { getAlais, getPublicPath, getBuilderConfig } = require('./hlper');
+const { getAlais, getPublicPath, getBuilderConfig, createEnvironmentHash } = require('./hlper');
 const { LOG_VALUE_COLOR, LOG_LABEL_COLOR } = require('./constant');
 
 const builderConfig = getBuilderConfig();
@@ -35,24 +36,21 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
       loader: require.resolve('postcss-loader'),
       options: {
         postcssOptions: {
+          ident: 'postcss',
+          config: false,
           plugins: [
             require('postcss-flexbugs-fixes'),
             require('postcss-nested'),
             [
               require('postcss-preset-env'),
               {
-                browsers: [
-                  '>1%',
-                  'last 4 versions',
-                  'Firefox ESR',
-                  'not ie < 9', // React doesn't support IE8 anyway
-                ],
                 autoprefixer: {
                   flexbox: 'no-2009',
                 },
                 stage: 3,
               },
             ],
+            require('postcss-normalize'),
           ],
         },
       },
@@ -67,6 +65,16 @@ const config = {
   mode: env.raw.NODE_ENV,
   cache: {
     type: 'filesystem',
+    version: createEnvironmentHash(env.raw),
+    cacheDirectory: paths.appWebpackCache,
+    store: 'pack',
+    buildDependencies: {
+      defaultWebpack: [ 'webpack/lib/' ],
+      config: [ __filename ],
+      tsconfig: [ paths.appTsConfig ].filter(f =>
+        fs.existsSync(f)
+      ),
+    },
   },
   output: {
     path: paths.appDist,

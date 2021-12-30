@@ -2,6 +2,7 @@
 const fs = require('fs');
 const paths = require('./paths');
 const chalk = require('chalk');
+const { createHash } = require('crypto');
 
 function getAlais() {
   const folderName = fs.readdirSync(paths.appSrc).filter(v => !v.includes('.'));
@@ -38,9 +39,17 @@ function getBuilderConfig() {
   return res;
 }
 
+function createEnvironmentHash(env) {
+  const hash = createHash('md5');
+  hash.update(JSON.stringify(env));
+
+  return hash.digest('hex');
+}
+
 module.exports = {
   getAlais,
   getPublicPath,
   getBuilderConfig,
+  createEnvironmentHash,
 };
 

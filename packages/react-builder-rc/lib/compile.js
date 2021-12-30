@@ -14,11 +14,21 @@ function getDevServerConfig(webpackConfig) {
     client: {
       overlay: false,
     },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*',
+    },
+    // Enable gzip compression of generated files.
+    compress: true,
     open: true,
     hot: true,
     port: 3000,
     host: '127.0.0.1',
     historyApiFallback: {
+      // Paths with dots should still use the history fallback.
+      // See https://github.com/facebook/create-react-app/issues/387.
+      disableDotRule: true,
       rewrites: [{
         from: /^\/$/,
         to: './index.html',
