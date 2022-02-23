@@ -14,7 +14,6 @@ module.exports = {
   },
   plugins: [
     'react',
-    'sort-imports-es6-autofix',
   ],
   rules: {
     // for variables in jsx
@@ -23,10 +22,5 @@ module.exports = {
     'no-useless-constructor': [ 'off' ],
     // see https://github.com/eslint/eslint/issues/6274
     'generator-star-spacing': [ 'error', { before: true, after: false }],
-    'sort-imports-es6-autofix/sort-imports-es6': [ 2, {
-      ignoreCase: false,
-      ignoreMemberSort: false,
-      memberSyntaxSortOrder: [ 'none', 'all', 'multiple', 'single' ],
-    }],
   },
 };

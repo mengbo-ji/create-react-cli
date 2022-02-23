@@ -16,7 +16,6 @@ module.exports = {
   plugins: [
     'react',
     '@typescript-eslint',
-    'sort-imports-es6-autofix',
   ],
   rules: {
     // for variables in jsx
@@ -27,10 +26,5 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
-    'sort-imports-es6-autofix/sort-imports-es6': [ 2, {
-      ignoreCase: false,
-      ignoreMemberSort: false,
-      memberSyntaxSortOrder: [ 'none', 'all', 'multiple', 'single' ],
-    }],
   },
 };

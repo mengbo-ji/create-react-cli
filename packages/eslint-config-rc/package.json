@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-rc",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "标准化的一个eslint-config配置方案",
   "main": "index.js",
   "scripts": {
@@ -15,8 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint-config-egg": "^10.0.0",
-    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0"
+    "eslint-config-egg": "^10.0.0"
   },
   "engines": {
     "node": "^10.12.0 || >=12.0.0"
